@@ -1,0 +1,42 @@
+{
+  "name": "@skyelight/mcp",
+  "version": "0.7.2",
+  "description": "MCP server for Skyelight — read feedback items from your project as an agent",
+  "mcpName": "io.github.plastrlab/skyelight-mcp",
+  "type": "module",
+  "bin": {
+    "skyelight-mcp": "./src/index.js"
+  },
+  "main": "./src/index.js",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md",
+    "src"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test 'test/**/*.test.js'",
+    "prepublishOnly": "npm test"
+  },
+  "keywords": [
+    "mcp",
+    "skyelight",
+    "feedback"
+  ],
+  "license": "SEE LICENSE IN LICENSE",
+  "homepage": "https://github.com/plastrlab/skyelight-mcp#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plastrlab/skyelight-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/plastrlab/skyelight-mcp/issues"
+  },
+  "author": "Plastr Lab (https://skyelight.ai)"
+}

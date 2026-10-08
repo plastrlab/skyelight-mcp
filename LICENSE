@@ -1,0 +1,17 @@
+Copyright (c) 2026 Plastr Lab. All rights reserved.
+
+This software is proprietary. It is licensed, not sold, for use with the
+Skyelight service (https://skyelight.ai) under the Skyelight terms of
+service. You may install and run it to connect your own tools to your own
+Skyelight account. You may not copy, modify, distribute, sublicense or sell
+it, or use it with any other service, without Plastr Lab's written
+permission.
+
+Versions of this package published before 0.5.3 were released under the MIT
+License, and those versions remain under it.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY ARISING FROM THE USE OF THE SOFTWARE.
