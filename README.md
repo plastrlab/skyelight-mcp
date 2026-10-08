@@ -1,5 +1,9 @@
 # @skyelight/mcp
 
+<!-- A full URL, not a relative path, so the npm page shows it too. The
+     image lives in the public repo (assets/), not in the npm package. -->
+![Skyelight: feedback pinned to the element, with the source behind it, for your coding agent](https://raw.githubusercontent.com/plastrlab/skyelight-mcp/main/assets/skyelight.png)
+
 [npm](https://www.npmjs.com/package/@skyelight/mcp) ·
 [source](https://github.com/plastrlab/skyelight-mcp) ·
 [docs](https://skyelight.ai/docs/mcp)

@@ -12,4 +12,4 @@
  * filesystem there. `test/server.test.js` asserts the two agree, so the pair
  * cannot drift again without a test going red.
  */
-export const VERSION = "0.7.2";
+export const VERSION = "0.7.3";

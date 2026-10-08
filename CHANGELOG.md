@@ -11,6 +11,13 @@ keeps working. A **patch** is a fix or a wording change. A **major** would be
 removing a tool or an argument, or changing what an existing field means, and
 there has not been one.
 
+## 0.7.3 — 2026-10-08
+
+### Changed
+
+- **Docs.** The README opens with a picture of Skyelight. No change to the
+  tools.
+
 ## 0.7.2 — 2026-10-08
 
 ### Changed
