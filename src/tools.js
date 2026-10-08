@@ -100,6 +100,13 @@ export function toolDefinitions(opts = {}) {
               'A user id, "me" for whoever this connection belongs to, or ' +
               '"none" for unassigned items.',
           },
+          task: {
+            type: "string",
+            enum: ["investigate", "plan", "fix", "none"],
+            description:
+              "Only items a person handed to an agent with this task (Hand off in the app), " +
+              'or "none" for items with no hand-off. Combine with assignee to find your own.',
+          },
           limit: { type: "number", description: "Max items (default 50)." },
         },
       },
@@ -551,6 +558,8 @@ export function renderList(result, { searched } = {}) {
     const bits = [i.type ?? "unsorted", i.status, i.page];
     if (i.assignee) bits.push(`assigned to ${i.assignee}`);
     else bits.push("unassigned");
+    // The standing ask, so an agent can pick its work from the list.
+    if (i.agentTask) bits.push(`hand-off: ${i.agentTask}`);
     if (i.replyCount > 0) bits.push(plural(i.replyCount, "reply", "replies"));
     // How many people hit this, once merging has told us they are the same
     // thing. Silent at 1, which is almost every row — a list where every line
@@ -886,6 +895,7 @@ export async function callTool(name, args, { client, config }) {
       type: args.type,
       status: args.status,
       assignee: args.assignee,
+      task: args.task,
       limit: args.limit,
     });
     return { text: renderList(result), data: result };

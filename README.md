@@ -115,7 +115,7 @@ agent calls `list_projects` first rather than guess.
 | --------------------- | ------------------------------------------------------------------------------------ |
 | `list_workspaces`     | Which workspaces this credential can reach, and who you are.                         |
 | `list_projects`       | The projects inside them, with the ids the other tools take.                         |
-| `list_items`          | What is outstanding. Filter by page, type, status, assignee.                         |
+| `list_items`          | What is outstanding. Filter by page, type, status, assignee, hand-off.               |
 | `search_items`        | Find items whose thread mentions some text, replies included.                        |
 | `get_item`            | Everything needed to work one item: thread, page, anchor, code, images.              |
 | `post_update`         | Report back on the thread the feedback came from.                                    |
@@ -154,6 +154,11 @@ stubs; `get_item` is where the thread and the anchor live.
 **"What is assigned to me."** `list_workspaces` returns your own user id, and
 `list_items` takes `assignee: "me"`, so the most ordinary question anyone asks
 an agent needs no id looked up by hand.
+
+**"What was I asked to fix."** A person can hand a thread to an agent in the
+app (Hand off: Investigate, Plan or Fix). `list_items` takes `task` with one of
+those, or `"none"`, and each row names its hand-off. With `assignee: "me"` it
+is your own queue of fixes.
 
 **Merged duplicates do not appear twice.** When somebody merges five reports of
 one problem in the web app, the duplicates leave the list and the item they were

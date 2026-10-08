@@ -11,6 +11,16 @@ keeps working. A **patch** is a fix or a wording change. A **major** would be
 removing a tool or an argument, or changing what an existing field means, and
 there has not been one.
 
+## 0.8.0 — 2026-10-08
+
+### Added
+
+- **`list_items` filters by hand-off.** A new `task` argument (`investigate`,
+  `plan`, `fix`, or `none`) returns only the items a person handed to an agent
+  with that task in the app, or only those with none. Each row in the list now
+  names its hand-off, so an agent can choose its work without fetching every
+  item.
+
 ## 0.7.3 — 2026-10-08
 
 ### Changed
