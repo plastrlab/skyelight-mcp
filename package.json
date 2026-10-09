@@ -1,6 +1,6 @@
 {
   "name": "@skyelight/mcp",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "MCP server for Skyelight — read feedback items from your project as an agent",
   "mcpName": "io.github.plastrlab/skyelight-mcp",
   "type": "module",

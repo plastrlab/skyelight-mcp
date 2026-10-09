@@ -35,17 +35,31 @@ import { createClient } from "./client.js";
 import { createServer, serveStdio } from "./server.js";
 
 let config;
+let client;
 try {
   config = resolveConfig();
+  client = createClient({ apiUrl: config.apiUrl, token: config.token });
 } catch (err) {
-  if (err instanceof ConfigError) {
-    // stderr, and a non-zero exit: an MCP client surfaces this as a failed
-    // server rather than hanging on a handshake that will never complete.
-    process.stderr.write(`${err.message}\n`);
-    process.exit(1);
-  }
-  throw err;
+  if (!(err instanceof ConfigError)) throw err;
+  /**
+   * No credentials: start anyway, and say so on every tool call.
+   *
+   * It used to exit here, before the handshake. A directory or a client
+   * checking what the server can do then got nothing, and listed Skyelight
+   * as having no tools. The tool list is static and public (it is in the
+   * README and the source); only calling a tool needs an account, and that
+   * is where the setup message now arrives, as the tool's error, where the
+   * person or the model will read it. The hosted server at /mcp already
+   * works this way: discovery is open, tools/call needs a sign-in.
+   */
+  process.stderr.write(
+    `${err.message}\n\nStarting without credentials: tools are listed, and each call returns this message.\n`,
+  );
+  config = { token: null, apiUrl: null, projectId: null, projectName: null };
+  client = new Proxy(
+    {},
+    { get: () => () => Promise.reject(new Error(err.message)) },
+  );
 }
 
-const client = createClient({ apiUrl: config.apiUrl, token: config.token });
 serveStdio(createServer({ client, config }));

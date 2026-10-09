@@ -11,6 +11,18 @@ keeps working. A **patch** is a fix or a wording change. A **major** would be
 removing a tool or an argument, or changing what an existing field means, and
 there has not been one.
 
+## 0.8.1 — 2026-10-09
+
+### Fixed
+
+- **Starts without credentials.** With no token configured, the server used
+  to print the setup message and exit before the handshake, so MCP
+  directories and clients checking what it can do saw no tools at all. It
+  now completes the handshake and lists its tools; each tool call returns the
+  setup message as its error until a token is configured. Nothing more is
+  exposed than the README and source already show. The hosted server at
+  `app.skyelight.ai/mcp` already worked this way.
+
 ## 0.8.0 — 2026-10-08
 
 ### Added
