@@ -11,6 +11,20 @@ keeps working. A **patch** is a fix or a wording change. A **major** would be
 removing a tool or an argument, or changing what an existing field means, and
 there has not been one.
 
+## 0.8.2 — 2026-10-10
+
+### Changed
+
+- **`get_item` says what the browser saw.** When a pin captured them, the
+  item's text now has a "Seen in …" line (browser, OS, window, color scheme,
+  language) and an "On the page just before the pin:" list: uncaught errors
+  with where they came from, `console.error` and `console.warn` messages, and
+  requests that failed with a 4xx or 5xx, each with how long before the pin.
+  An error the browser hid ("Script error." from a script on another site)
+  says so, names the page's scripts from other sites it could have come from,
+  and how to see the real error. Pins without this capture read as before.
+  The hosted server at `app.skyelight.ai/mcp` already prints it.
+
 ## 0.8.1 — 2026-10-09
 
 ### Fixed

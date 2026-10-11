@@ -698,6 +698,12 @@ export function renderItem(item) {
     }
   }
 
+  // Where it was seen, and what had just gone wrong (SKY-410). Before the
+  // anchor, because a failed request or a stack frame is often the whole
+  // answer, and a reader who has it need not open the page at all.
+  lines.push(...environmentLines(item.evidence?.environment));
+  lines.push(...problemLines(item.evidence?.problems));
+
   if (item.attachments?.length) {
     const n = item.attachments.length;
     lines.push(
@@ -1034,3 +1040,86 @@ export async function callTool(name, args, { client, config }) {
 }
 
 export { PROJECT_HINT };
+
+/** "Seen in Chrome 141 on macOS, 1440×900 at 2x, dark mode, en-US." */
+export function environmentLines(env) {
+  if (!env) return [];
+  const parts = [];
+  const browser = [env.browser, env.os && `on ${env.os}`]
+    .filter(Boolean)
+    .join(" ");
+  if (browser) parts.push(browser);
+  if (env.viewport) {
+    parts.push(
+      `${env.viewport.width}×${env.viewport.height}` +
+        (env.pixelRatio && env.pixelRatio !== 1
+          ? ` at ${env.pixelRatio}x`
+          : "") +
+        (env.mobile ? " (mobile)" : ""),
+    );
+  }
+  if (env.colorScheme) parts.push(`${env.colorScheme} mode`);
+  if (env.reducedMotion) parts.push("reduced motion");
+  if (env.language) parts.push(env.language);
+  return parts.length > 0 ? ["", `Seen in ${parts.join(", ")}.`] : [];
+}
+
+/**
+ * The errors, console messages and failed requests just before the pin,
+ * newest last.
+ */
+export function problemLines(problems) {
+  if (!problems) return [];
+  const errors = problems.errors ?? [];
+  const consoleMessages = problems.consoleMessages ?? [];
+  const requests = problems.failedRequests ?? [];
+  if (
+    errors.length === 0 &&
+    consoleMessages.length === 0 &&
+    requests.length === 0
+  ) {
+    return [];
+  }
+  const ago = (s) =>
+    s < 1
+      ? "at the pin"
+      : s < 60
+        ? `${s}s before`
+        : `${Math.round(s / 60)}m before`;
+  const out = ["", "On the page just before the pin:"];
+  for (const e of errors) {
+    out.push(
+      `- Error${e.count > 1 ? ` (${e.count} times)` : ""}, ${ago(e.secondsBefore)}: ${e.message}`,
+    );
+    if (e.crossOrigin) {
+      out.push(
+        "    (From a script on another site, loaded without CORS: the browser hides its message, file and line.)",
+      );
+    } else {
+      for (const frame of e.stack ?? []) out.push(`    ${frame}`);
+    }
+  }
+  if (errors.some((e) => e.crossOrigin) && problems.otherScripts?.length) {
+    out.push(
+      `  Scripts from other sites on the page, where a hidden error can come from: ${problems.otherScripts.join(", ")}`,
+      `  To see the real error, load the script with crossorigin="anonymous" and serve it with Access-Control-Allow-Origin.`,
+    );
+  }
+  for (const m of consoleMessages) {
+    out.push(
+      `- console.${m.level === "warn" ? "warn" : "error"}${m.count > 1 ? ` (${m.count} times)` : ""}, ${ago(m.secondsBefore)}: ${m.message}`,
+    );
+    for (const frame of m.stack ?? []) out.push(`    ${frame}`);
+  }
+  for (const r of requests) {
+    out.push(
+      `- ${r.status} from ${r.url} (${r.type}, ${r.durationMs} ms), ${ago(r.secondsBefore)}`,
+    );
+  }
+  if (problems.errorsWatched === false) {
+    out.push(
+      "  (Only failed requests were recorded here; the page's errors and console were not.)",
+    );
+  }
+  return out;
+}
