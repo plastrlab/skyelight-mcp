@@ -11,6 +11,15 @@ keeps working. A **patch** is a fix or a wording change. A **major** would be
 removing a tool or an argument, or changing what an existing field means, and
 there has not been one.
 
+## 0.9.1 — 2026-10-14
+
+### Changed
+
+- **The Claude Code plugin is ready for Anthropic's directory.** An icon,
+  docs, support, privacy and terms links in `plugin.json`, its own README
+  (what it does and what data it sends) and LICENSE. Nothing changed in the
+  npm package.
+
 ## 0.9.0 — 2026-10-14
 
 ### Added
