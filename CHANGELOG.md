@@ -11,6 +11,21 @@ keeps working. A **patch** is a fix or a wording change. A **major** would be
 removing a tool or an argument, or changing what an existing field means, and
 there has not been one.
 
+## 0.9.0 — 2026-10-14
+
+### Added
+
+- **A Claude Code plugin.** `/plugin marketplace add plastrlab/skyelight-mcp`,
+  then `/plugin install skyelight@skyelight`. It connects to the hosted server
+  (OAuth, no token) and adds a skill for working through feedback and two
+  commands, `/skyelight:whats-new` and `/skyelight:fix-feedback`. The files are
+  `.claude-plugin/marketplace.json` and `plugin/`; npm doesn't ship them.
+
+- **Every tool has a title.** A name for people ("List feedback", "Merge
+  duplicates"), sent as `title` and as `annotations.title`, which clients show
+  in their tool lists and approval prompts and connector directories require.
+  The hosted server at `app.skyelight.ai/mcp` serves them already.
+
 ## 0.8.2 — 2026-10-10
 
 ### Changed

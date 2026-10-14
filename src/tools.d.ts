@@ -10,6 +10,7 @@
 
 export interface ToolDefinition {
   name: string;
+  title?: string;
   description: string;
   inputSchema: {
     type: "object";
@@ -19,6 +20,7 @@ export interface ToolDefinition {
   _meta?: Record<string, unknown>;
   securitySchemes?: Array<{ type: string; scopes?: string[] }>;
   annotations?: {
+    title?: string;
     readOnlyHint?: boolean;
     destructiveHint?: boolean;
     idempotentHint?: boolean;

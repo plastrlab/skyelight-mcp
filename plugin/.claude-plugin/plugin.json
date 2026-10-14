@@ -1,0 +1,14 @@
+{
+  "name": "skyelight",
+  "version": "1.0.0",
+  "description": "Read the feedback people pinned on your app, see it by source file before you edit, and report back when the work is done.",
+  "author": {
+    "name": "Skyelight",
+    "email": "support@skyelight.ai",
+    "url": "https://skyelight.ai"
+  },
+  "homepage": "https://skyelight.ai/docs/mcp",
+  "repository": "https://github.com/plastrlab/skyelight-mcp",
+  "license": "SEE LICENSE IN LICENSE",
+  "keywords": ["feedback", "design review", "qa", "mcp", "skyelight"]
+}

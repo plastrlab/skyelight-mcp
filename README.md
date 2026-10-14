@@ -52,6 +52,18 @@ package holds no environment-specific constants.
 The same setup, with a snippet per client, is in the Skyelight web app under
 account settings → **Coding Agents**.
 
+## As a Claude Code plugin
+
+```
+/plugin marketplace add plastrlab/skyelight-mcp
+/plugin install skyelight@skyelight
+```
+
+The plugin connects Claude Code to Skyelight's remote server (sign-in is
+OAuth, as above) and adds a skill for working through feedback and two
+commands: `/skyelight:whats-new` and `/skyelight:fix-feedback`. Its files are
+`.claude-plugin/marketplace.json` and `plugin/` in this repository.
+
 ## With a token
 
 **Get a personal access token.** In the Skyelight web app, go to account

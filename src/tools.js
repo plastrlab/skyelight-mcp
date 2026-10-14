@@ -9,6 +9,7 @@
 
 import { imageBlocksFor } from "./images.js";
 import { STATUS } from "./brand.js";
+import { TOOL_TITLES } from "./titles.js";
 import {
   callInsightTool,
   insightToolDefinitions,
@@ -344,7 +345,14 @@ export function toolDefinitions(opts = {}) {
     ...insightToolDefinitions(),
   ].map((tool) => ({
     ...tool,
-    annotations: TOOL_ANNOTATIONS[tool.name],
+    // The name a person sees in a client's tool list and approval prompt.
+    // Top-level is the spec's place for it; `annotations.title` is where
+    // clients on the older revision look.
+    title: TOOL_TITLES[tool.name],
+    annotations: {
+      title: TOOL_TITLES[tool.name],
+      ...TOOL_ANNOTATIONS[tool.name],
+    },
     // Every tool acts as a signed-in person. The OpenAI Apps SDK reads this
     // per-tool declaration to know a call needs the linked account
     // (developers.openai.com/apps-sdk/build/auth); other clients ignore it.
