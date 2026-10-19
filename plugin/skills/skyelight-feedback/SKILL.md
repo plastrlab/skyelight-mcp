@@ -27,6 +27,13 @@ Call `find_by_source` with the file you are about to change. Feedback on that fi
 
 Call `post_update` on the item: what you changed, where, and how to check it. When the user confirms the fix, `set_status` to resolved. Don't resolve an item on your own judgment that it is done; the person who left it decides.
 
-## Reviews and hand-offs
+## When a thread is handed to you
 
-`project_review` summarizes a project's state; `decision_log` holds what was settled. Use them when asked for a review, a hand-off, or "where are we".
+A person can hand a thread to an agent as **Investigate**, **Plan** or **Fix**. `get_item` shows which one. The hand-off is binding.
+
+- **Investigate** or **Plan**: reply on the thread with `post_update`, giving your findings or a plan, and change no code. This holds even if the user says to start in chat. The person reads it in Skyelight and decides.
+- **Fix**: this is the go-ahead. If the thread has a plan or findings, follow them. If what you find differs from the plan, say so in `post_update` instead of quietly doing something else.
+
+## Project summaries
+
+`project_review` summarizes a project's state; `decision_log` holds what was settled. Use them when asked for a review, a summary for someone taking over, or "where are we".

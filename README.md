@@ -25,11 +25,10 @@ Two ways to connect, with the same eighteen tools either way:
   machine and carries a personal token. For clients or machines where the
   browser sign-in is not an option.
 
-Coding agents need a paid seat (owner, admin or collaborator) on a Pro plan or
-above. On Free, the same seat connects too and can publish to Skyelight
-(`publish_review_link`, one hosted prototype); reading feedback with an agent
-is on Pro. A reviewer seat reads and comments in the web app but does not
-carry agent tools.
+Coding agents need a paid seat (owner, admin or collaborator), on any plan.
+On Free, your agent works 25 threads a month; Pro and above have no limit. A
+reviewer seat reads and comments in the web app but does not carry agent
+tools.
 
 ## The short way
 
@@ -247,14 +246,16 @@ sign-in and a personal token (`sky_...`).
 The server enforces nothing; the API does. The agent can do what your account
 can do in that workspace, and nothing more:
 
-- Agent tools need a **paid seat** (owner, admin or collaborator) in an
-  organization on **Pro or above**. A reviewer seat is refused with the
-  reason — the workspace is listed and marked rather than hidden, so you are
-  told which gate closed instead of being told it does not exist.
-- **On Free**, a paid seat connects for publishing: `list_workspaces`,
-  `list_projects` and `publish_review_link` (one hosted prototype). The
-  reading tools answer with how much feedback is waiting and that reading it
-  is on Pro; the rest name the plan.
+- Agent tools need a **paid seat** (owner, admin or collaborator), on any
+  plan. A reviewer seat is refused with the reason — the workspace is listed
+  and marked rather than hidden, so you are told which gate closed instead of
+  being told it does not exist.
+- **On Free**, your agent works **25 threads a month**. A thread counts the
+  first time `get_item`, `post_update`, `set_status`, `assign` or
+  `merge_items` touches it, once a month, and stays counted when it is
+  resolved. Listing and searching never count. `list_workspaces` says how
+  many are left, and at the limit a new thread is refused with the reset
+  date. Free hosts one prototype.
 - Adding a deployed app's address to Review Links is for owners and admins.
 - Owners, admins and collaborators read, reply, raise items and change any
   thread's status.

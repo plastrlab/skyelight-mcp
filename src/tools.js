@@ -70,7 +70,9 @@ export function toolDefinitions(opts = {}) {
       name: "list_items",
       description:
         "List feedback items (bugs, ideas, comments) people left on a Skyelight project. " +
-        "Returns a summary of the project plus matching items. Start here to see what is outstanding.",
+        "Returns a summary of the project plus matching items. Start here to see what is outstanding. " +
+        "An item's hand-off (investigate, plan, fix) is set by the team and binding: on investigate " +
+        "or plan, reply on the thread and change no code.",
       inputSchema: {
         type: "object",
         properties: {
@@ -106,7 +108,8 @@ export function toolDefinitions(opts = {}) {
             enum: ["investigate", "plan", "fix", "none"],
             description:
               "Only items a person handed to an agent with this task (Hand off in the app), " +
-              'or "none" for items with no hand-off. Combine with assignee to find your own.',
+              'or "none" for items with no hand-off. Combine with assignee to find your own. ' +
+              "Investigate and plan mean reply on the thread with no code changes; fix means make the change.",
           },
           limit: { type: "number", description: "Max items (default 50)." },
         },
@@ -464,9 +467,10 @@ export function renderWorkspaces(result) {
     const projects = plural(w.projectCount, "project", "projects");
     lines.push(`  ${w.name} — ${w.role}, ${projects}`);
     lines.push(`    ${w.id}`);
-    // What an agent cannot do here, and why: a seat to ask for, a plan to
-    // upgrade, or Free's MCP, which publishes prototypes.
+    // What an agent cannot do here, and why: a seat to ask for.
     if (w.unavailableReason) lines.push(`    ${w.unavailableReason}`);
+    // Free's monthly agent threads, and how many are left (SKY-442).
+    if (w.allowance) lines.push(`    ${w.allowance}`);
   }
   return lines.join("\n");
 }
@@ -518,6 +522,17 @@ export function renderProjects(result) {
   return lines.join("\n");
 }
 
+/**
+ * What each hand-off means, short enough for a list row: agents pick their
+ * work from the list, and "hand-off: plan" alone read as a label.
+ */
+const HAND_OFF_SHORT = {
+  investigate: "reply with findings, no code changes",
+  plan: "reply with a plan, no code changes",
+  fix: "make the change",
+  build: "make the change",
+};
+
 export function renderList(result, { searched } = {}) {
   const { project, summary, items, matched, truncated, capped, scanLimit } =
     result;
@@ -567,7 +582,11 @@ export function renderList(result, { searched } = {}) {
     if (i.assignee) bits.push(`assigned to ${i.assignee}`);
     else bits.push("unassigned");
     // The standing ask, so an agent can pick its work from the list.
-    if (i.agentTask) bits.push(`hand-off: ${i.agentTask}`);
+    if (i.agentTask) {
+      bits.push(
+        `hand-off: ${i.agentTask}${HAND_OFF_SHORT[i.agentTask] ? ` (${HAND_OFF_SHORT[i.agentTask]})` : ""}`,
+      );
+    }
     if (i.replyCount > 0) bits.push(plural(i.replyCount, "reply", "replies"));
     // How many people hit this, once merging has told us they are the same
     // thing. Silent at 1, which is almost every row — a list where every line
@@ -625,13 +644,25 @@ export function renderItem(item) {
     lines.push(`Linear: ${l.identifier}${handed}. ${l.url}`);
   }
 
-  // The mode is the ask. An agent that reads "investigate" and opens a
-  // pull request has done the wrong job well.
+  // The mode is the ask, and it binds. An agent that reads "investigate"
+  // or "plan" and changes code has done the wrong job well, and one told
+  // "start" in chat while a thread says plan must still stop at the plan:
+  // the go-ahead is the hand-off being switched to fix in Skyelight.
   const ASKS = {
-    investigate: "investigate — report back, change nothing",
-    plan: "plan — describe the change, do not make it",
-    fix: "fix — make the change and open a pull request",
-    build: "build — build it and open a pull request",
+    investigate:
+      "investigate — find out what is going on and reply on this thread with post_update. " +
+      "Change no code, even if asked to in chat",
+    plan:
+      "plan — reply on this thread with the change you would make and what it touches " +
+      "(post_update), then stop. Change no code, even if asked to in chat: the go-ahead " +
+      "is someone switching the hand-off to Fix in Skyelight",
+    fix:
+      "fix — make the change, following any plan or findings already on this thread, " +
+      "and report back on it with post_update",
+    // The older name for fix; some threads still carry it.
+    build:
+      "build — make the change, following any plan or findings already on this thread, " +
+      "and report back on it with post_update",
   };
 
   // The thread's standing ask, set by whoever triaged it (Hand off in the

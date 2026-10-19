@@ -1,7 +1,7 @@
 {
   "name": "skyelight",
   "displayName": "Skyelight",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Read the feedback people pinned on your app, see it by source file before you edit, and report back when the work is done.",
   "author": {
     "name": "Skyelight",

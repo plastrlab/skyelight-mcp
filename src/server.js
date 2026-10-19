@@ -94,7 +94,12 @@ export function createServer({ client, config, name = "skyelight" }) {
               "element it points at. whats_new catches you up since you last looked; " +
               "find_by_source shows feedback on a file before you edit it; find_similar " +
               "checks for an existing report before create_item; project_review and " +
-              "decision_log hold what a project settled, for reviews and hand-offs.",
+              "decision_log hold what a project settled, for reviews and summaries. " +
+              "An item can carry a hand-off the team set: investigate, plan or fix. It is " +
+              "binding. On investigate or plan, reply on the thread with post_update and " +
+              "change no code, even if asked to in chat; the go-ahead is the hand-off being " +
+              "switched to fix in Skyelight. On fix, make the change, following any plan " +
+              "or findings already on the thread.",
           };
           break;
 

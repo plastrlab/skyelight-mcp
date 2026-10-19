@@ -11,6 +11,20 @@ keeps working. A **patch** is a fix or a wording change. A **major** would be
 removing a tool or an argument, or changing what an existing field means, and
 there has not been one.
 
+## 0.9.2 — 2026-10-19
+
+### Changed
+
+- **Hand-offs are binding.** When a thread is handed to the agent to
+  investigate or plan, the tools tell it to reply on the thread with
+  `post_update` and change no code, even if asked in chat to start. Switching
+  the hand-off to Fix is the go-ahead.
+- **Free includes the agent tools.** A paid seat on any plan can use them. Free
+  covers 25 threads a month, and Pro and above have no limit. The README and
+  the plugin README now say so.
+- **Claude Code plugin 1.0.2.** The skill gives hand-offs their own section,
+  and its old "Reviews and hand-offs" heading is now "Project summaries".
+
 ## 0.9.1 — 2026-10-14
 
 ### Changed

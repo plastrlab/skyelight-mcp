@@ -28,9 +28,9 @@ asked for and tell them when it's done.
 The first time Claude Code connects, it opens a browser to sign in to
 Skyelight (OAuth). No API key is stored in the plugin or in your settings.
 
-You need a Skyelight account. Reading feedback with an agent needs a seat
-(owner, admin or collaborator) on Pro or above; on Free the connection can
-publish a review link. Plans: https://www.skyelight.ai/docs/plans
+You need a Skyelight account and a seat (owner, admin or collaborator), on
+any plan. On Free, your agent works 25 threads a month; Pro and above have no
+limit. Plans: https://www.skyelight.ai/docs/plans
 
 ## What data it sends
 
