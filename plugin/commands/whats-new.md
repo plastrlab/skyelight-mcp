@@ -1,4 +1,5 @@
 ---
+name: whats-new
 description: Catch up on Skyelight feedback since you last looked
 argument-hint: "[project]"
 ---

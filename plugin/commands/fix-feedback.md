@@ -1,4 +1,5 @@
 ---
+name: fix-feedback
 description: Pick up an open Skyelight feedback item and fix it
 argument-hint: "[item or project]"
 ---

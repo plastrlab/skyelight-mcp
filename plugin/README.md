@@ -1,10 +1,10 @@
-# Skyelight for Claude Code
+# Skyelight for Claude Code and Cursor
 
 Skyelight is feedback pinned directly on the pages of a running app: a
 comment on a button, a heading or a layout, with the element it points at and,
 when the app uses the Skyelight build plugin, the source file and line behind
-it. This plugin gives Claude Code that feedback, so it can fix what people
-asked for and tell them when it's done.
+it. This plugin gives your coding agent that feedback, so it can fix what
+people asked for and tell them when it's done.
 
 ## What it adds
 
@@ -15,17 +15,23 @@ asked for and tell them when it's done.
 - **A skill, `skyelight-feedback`.** How to work through feedback: catch up,
   read the whole thread, check the files you'll touch, post what you changed,
   and leave resolving to the person who asked.
-- **Two commands.** `/skyelight:whats-new` catches you up;
-  `/skyelight:fix-feedback` picks up an item and fixes it.
+- **Two commands.** `whats-new` catches you up; `fix-feedback` picks up an
+  item and fixes it. In Claude Code they are `/skyelight:whats-new` and
+  `/skyelight:fix-feedback`.
 
 ## Install
+
+**Claude Code:** type `/plugin`, open Discover and install Skyelight. Or add
+this repository as a marketplace:
 
 ```
 /plugin marketplace add plastrlab/skyelight-mcp
 /plugin install skyelight@skyelight
 ```
 
-The first time Claude Code connects, it opens a browser to sign in to
+**Cursor:** open the Cursor Marketplace, find Skyelight and select Install.
+
+The first time your agent connects, it opens a browser to sign in to
 Skyelight (OAuth). No API key is stored in the plugin or in your settings.
 
 You need a Skyelight account and a seat (owner, admin or collaborator), on
@@ -34,7 +40,7 @@ limit. Plans: https://www.skyelight.ai/docs/plans
 
 ## What data it sends
 
-The plugin itself runs nothing on your machine. Claude Code talks to
+The plugin itself runs nothing on your machine. Your editor talks to
 `https://app.skyelight.ai/mcp` over HTTPS, signed in as you, and only when a
 tool is called.
 
@@ -51,7 +57,7 @@ tool is called.
   what Claude puts in a tool call's arguments.
 
 Every call acts with your own permissions in Skyelight. A write is yours, with
-the editor it came through (Claude Code) shown beside the timestamp.
+the editor it came through (Claude Code or Cursor) shown beside the timestamp.
 
 - Privacy policy: https://www.skyelight.ai/privacy-policy
 - Terms of service: https://www.skyelight.ai/terms-of-service

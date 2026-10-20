@@ -134,6 +134,17 @@ describe("finding an agent", () => {
     assert.equal(findClient("emacs"), null);
   });
 
+  // Cursor only registers itself by DCR, which Clerk keeps off, so it has
+  // to be handed the pre-registered client.
+  test("Cursor is given the client id when the deployment names one", () => {
+    const cursor = findClient("cursor");
+    assert.deepEqual(cursor.entry("https://x/mcp", "abc"), {
+      url: "https://x/mcp",
+      auth: { CLIENT_ID: "abc" },
+    });
+    assert.deepEqual(cursor.entry("https://x/mcp", ""), { url: "https://x/mcp" });
+  });
+
   test("every client can either write a file or run a command", () => {
     for (const c of CLIENTS) {
       assert.ok(

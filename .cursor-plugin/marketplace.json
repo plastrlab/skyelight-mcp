@@ -1,0 +1,19 @@
+{
+  "name": "skyelight",
+  "owner": {
+    "name": "Skyelight",
+    "email": "support@skyelight.ai"
+  },
+  "metadata": {
+    "description": "Skyelight for Cursor: the feedback people pinned on your running app, for your coding agent.",
+    "version": "1.0.3"
+  },
+  "plugins": [
+    {
+      "name": "skyelight",
+      "source": "plugin",
+      "description": "Read the feedback people pinned on your app, see it by source file before you edit, and report back when the work is done.",
+      "category": "productivity"
+    }
+  ]
+}

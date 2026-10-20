@@ -75,7 +75,15 @@ export const CLIENTS = [
     label: "Cursor",
     file: () => join(home(), ".cursor", "mcp.json"),
     format: "json",
-    entry: (url) => ({ url }),
+    /**
+     * The client id in Cursor's `auth` block, so Cursor signs in as our
+     * pre-registered client. Without it Cursor registers itself, and Cursor
+     * only knows dynamic client registration, which the Clerk instance keeps
+     * off. Cursor's desktop callback is fixed at `localhost:8787`, so that
+     * address (and the web one) is registered with Clerk, not our usual port.
+     */
+    entry: (url, clientId) =>
+      clientId ? { url, auth: { CLIENT_ID: clientId } } : { url },
     detect: () => existsSync(join(home(), ".cursor")),
   },
   {

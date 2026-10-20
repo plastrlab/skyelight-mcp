@@ -11,6 +11,24 @@ keeps working. A **patch** is a fix or a wording change. A **major** would be
 removing a tool or an argument, or changing what an existing field means, and
 there has not been one.
 
+## 0.9.3 — 2026-10-20
+
+### Fixed
+
+- **Cursor signs in.** `init --client cursor` now writes Skyelight's
+  sign-in client into Cursor's `auth` block. Cursor can only register itself
+  with dynamic client registration, which Skyelight doesn't offer, so
+  without the client every tool call failed with "does not support dynamic
+  client registration".
+
+### Added
+
+- **The plugin installs in Cursor.** The same `plugin/` folder now carries a
+  Cursor manifest (`.cursor-plugin/plugin.json`, with the server and its
+  sign-in client) and a marketplace file at the repository root, for the
+  Cursor Marketplace. Plugin 1.0.3; the Claude Code side changes only in its
+  README.
+
 ## 0.9.2 — 2026-10-19
 
 ### Changed
