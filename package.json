@@ -1,7 +1,7 @@
 {
   "name": "@skyelight/mcp",
-  "version": "0.9.3",
-  "description": "MCP server for Skyelight — read feedback items from your project as an agent",
+  "version": "1.0.0",
+  "description": "Give your AI assistant feedback pinned to the exact element, with its code, so it can fix and reply.",
   "mcpName": "io.github.plastrlab/skyelight-mcp",
   "type": "module",
   "bin": {
@@ -12,6 +12,7 @@
     "LICENSE",
     "README.md",
     "CHANGELOG.md",
+    "SECURITY.md",
     "src"
   ],
   "engines": {
@@ -23,11 +24,22 @@
   },
   "keywords": [
     "mcp",
+    "mcp-server",
     "skyelight",
-    "feedback"
+    "feedback",
+    "website-feedback",
+    "design-review",
+    "qa",
+    "review",
+    "prototype",
+    "coding-agent",
+    "claude-code",
+    "cursor",
+    "codex",
+    "chatgpt"
   ],
   "license": "SEE LICENSE IN LICENSE",
-  "homepage": "https://github.com/plastrlab/skyelight-mcp#readme",
+  "homepage": "https://skyelight.ai/docs/mcp",
   "publishConfig": {
     "access": "public"
   },

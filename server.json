@@ -1,0 +1,53 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.plastrlab/skyelight-mcp",
+  "title": "Skyelight",
+  "description": "Give your AI assistant feedback pinned to the exact element, with its code, so it can fix and reply.",
+  "version": "1.0.0",
+  "websiteUrl": "https://skyelight.ai/docs/mcp?ref=mcp-registry",
+  "repository": {
+    "url": "https://github.com/plastrlab/skyelight-mcp",
+    "source": "github"
+  },
+  "icons": [
+    {
+      "src": "https://app.skyelight.ai/mcp/icon.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "258x258"
+      ]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://app.skyelight.ai/mcp"
+    }
+  ],
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@skyelight/mcp",
+      "version": "1.0.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "SKYELIGHT_API_URL",
+          "description": "The Skyelight server. Use https://app.skyelight.ai.",
+          "isRequired": true,
+          "default": "https://app.skyelight.ai",
+          "format": "string"
+        },
+        {
+          "name": "SKYELIGHT_API_TOKEN",
+          "description": "A personal token (sky_...) from Skyelight account settings, API Keys.",
+          "isRequired": true,
+          "isSecret": true,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}

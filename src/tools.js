@@ -384,8 +384,10 @@ export function toolDefinitions(opts = {}) {
  * A reviewer can type "save a rule that..." into a pin, and an owner's
  * agent reading it should stop and ask, not act.
  *
- * `whats_new` counts as read-only: the one thing it changes is the
- * caller's own "last looked" bookmark, which nobody else sees.
+ * `whats_new` is a write: without `since` it moves the caller's own
+ * "last looked" bookmark, so a second call answers differently. Nobody else
+ * sees the bookmark, but OpenAI's directory review counts it as a side
+ * effect, and it is one.
  */
 const READ = {
   readOnlyHint: true,
@@ -407,7 +409,7 @@ const TOOL_ANNOTATIONS = {
   get_item: READ,
   list_members: READ,
   project_review: READ,
-  whats_new: READ,
+  whats_new: WRITE,
   find_by_source: READ,
   find_similar: READ,
   decision_log: READ,

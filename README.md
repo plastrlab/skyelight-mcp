@@ -25,10 +25,10 @@ Two ways to connect, with the same eighteen tools either way:
   machine and carries a personal token. For clients or machines where the
   browser sign-in is not an option.
 
-Coding agents need a paid seat (owner, admin or collaborator), on any plan.
-On Free, your agent works 25 threads a month; Pro and above have no limit. A
-reviewer seat reads and comments in the web app but does not carry agent
-tools.
+Every plan includes every tool, Free included, for owners, admins and
+collaborators. On Free, your agent gets 25 agent threads a month; Pro and
+above have no limit. A reviewer reads and comments in the web app but does
+not get agent tools.
 
 ## The short way
 
@@ -143,6 +143,15 @@ agent calls `list_projects` first rather than guess.
 | `merge_items`         | Fold duplicate items into one.                                                       |
 | `publish_review_link` | Share something for review: code for Skyelight to host, or a deployed app's address. |
 
+**Which tools change things.** `list_workspaces`, `list_projects`,
+`list_items`, `search_items`, `get_item`, `list_members`, `project_review`,
+`find_by_source`, `find_similar` and `decision_log` only read. `post_update`,
+`create_item`, `set_status`, `assign`, `save_rule`, `merge_items`,
+`publish_review_link` and `whats_new` (which moves your "last looked"
+bookmark) make changes. Every tool carries MCP annotations saying which it
+is, with `merge_items` marked destructive, so your client can ask before a
+write runs.
+
 **Publishing for review.** `publish_review_link` takes one of two things:
 
 - `code`: one HTML page, or one React component with an export default (a
@@ -246,16 +255,17 @@ sign-in and a personal token (`sky_...`).
 The server enforces nothing; the API does. The agent can do what your account
 can do in that workspace, and nothing more:
 
-- Agent tools need a **paid seat** (owner, admin or collaborator), on any
-  plan. A reviewer seat is refused with the reason — the workspace is listed
+- Agent tools work on **every plan, Free included**, for owners, admins and
+  collaborators. A reviewer is refused with the reason — the workspace is listed
   and marked rather than hidden, so you are told which gate closed instead of
   being told it does not exist.
-- **On Free**, your agent works **25 threads a month**. A thread counts the
-  first time `get_item`, `post_update`, `set_status`, `assign` or
-  `merge_items` touches it, once a month, and stays counted when it is
-  resolved. Listing and searching never count. `list_workspaces` says how
-  many are left, and at the limit a new thread is refused with the reset
-  date. Free hosts one prototype.
+- **On Free**, your agent gets **25 agent threads a month**. Two things
+  count: each conversation, once, on its first call of any tool, listing
+  included; and each thread the first time in the month `get_item`,
+  `post_update`, `set_status`, `assign` or `merge_items` touches it. So
+  "what feedback do I have?" then "fix that one" is 2. Nothing counted is
+  given back. `list_workspaces` says how many are left, and at the limit
+  anything new is refused with the reset date. Free hosts one prototype.
 - Adding a deployed app's address to Review Links is for owners and admins.
 - Owners, admins and collaborators read, reply, raise items and change any
   thread's status.

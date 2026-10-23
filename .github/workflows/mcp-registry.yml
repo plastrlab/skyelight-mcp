@@ -1,0 +1,46 @@
+# Publishes server.json to the official MCP Registry when a release is tagged.
+#
+# The package is published to npm by hand from the source repo first, then
+# mirrored here with a v<version> tag (scripts/mirror-mcp.sh), which runs
+# this. The registry checks that the npm version exists and that its mcpName
+# matches server.json's name, and the io.github.plastrlab/ namespace is
+# proved by this workflow running in the plastrlab org (GitHub OIDC), so no
+# key or secret is needed.
+name: Publish to MCP Registry
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Check the versions agree
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          pkg="$(jq -r .version package.json)"
+          srv="$(jq -r .version server.json)"
+          npmv="$(jq -r '.packages[0].version' server.json)"
+          if [ "$GITHUB_EVENT_NAME" = push ] && [ "$tag" != "$pkg" ]; then
+            echo "Tag v$tag does not match package.json $pkg"; exit 1
+          fi
+          if [ "$pkg" != "$srv" ] || [ "$pkg" != "$npmv" ]; then
+            echo "package.json $pkg, server.json $srv, server.json package $npmv"; exit 1
+          fi
+
+      - name: Install mcp-publisher
+        run: |
+          curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
+
+      - name: Authenticate to the MCP Registry
+        run: ./mcp-publisher login github-oidc
+
+      - name: Publish
+        run: ./mcp-publisher publish

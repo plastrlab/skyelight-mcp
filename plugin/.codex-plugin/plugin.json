@@ -1,0 +1,107 @@
+{
+  "name": "skyelight",
+  "version": "1.0.5",
+  "description": "Read the feedback people pinned on your app, see it by source file before you edit, and report back when the work is done.",
+  "author": {
+    "name": "PLASTR LTD",
+    "email": "support@skyelight.ai",
+    "url": "https://www.skyelight.ai"
+  },
+  "homepage": "https://www.skyelight.ai/docs/mcp",
+  "repository": "https://github.com/plastrlab/skyelight-mcp",
+  "license": "SEE LICENSE IN LICENSE",
+  "keywords": [
+    "feedback",
+    "design review",
+    "qa",
+    "mcp",
+    "skyelight"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Skyelight",
+    "shortDescription": "Feedback pinned on your app",
+    "longDescription": "Skyelight is where your team and clients leave feedback directly on the pages of a running website or app. Each comment is pinned to the element it is about, with the page, the browser size and, when the workspace allows it, a screenshot.\n\nConnect Skyelight to read that feedback where you work: see what is still open on a project, open a full thread with the element it points at, catch up on what changed since you last looked, and read what a project has already decided. When the work is done, reply on the thread and mark it resolved, so the person who reported it knows.\n\nSkyelight only reads and changes what your own Skyelight account can see. Anything that changes a thread asks you first.\n\nSkyelight is made by PLASTR LTD, doing business as Skyelight.",
+    "developerName": "PLASTR LTD",
+    "category": "Productivity",
+    "capabilities": [
+      "List the open feedback on a project",
+      "Open a thread with the element and page it points at",
+      "Catch up on what changed since you last looked",
+      "Summarize what a project has decided",
+      "Reply on a thread and mark it resolved"
+    ],
+    "websiteURL": "https://www.skyelight.ai",
+    "supportURL": "https://www.skyelight.ai/docs/mcp",
+    "privacyPolicyURL": "https://www.skyelight.ai/privacy-policy",
+    "termsOfServiceURL": "https://www.skyelight.ai/terms-of-service",
+    "defaultPrompt": [
+      "What feedback is still open on my Skyelight projects?",
+      "What's new in Skyelight since I last checked?",
+      "Summarize what we decided on my Skyelight project."
+    ],
+    "composerIcon": "./icon.png",
+    "logo": "./icon.png"
+  },
+  "extensions": {
+    "com.openai": {
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "See open feedback",
+              "prompt": "What feedback is still open on my Skyelight projects?",
+              "tools_triggered": "list_projects, list_items",
+              "expected_behavior": "Lists the open threads on the account's projects with who left each one and the page it is on."
+            },
+            {
+              "description": "Open one thread in full",
+              "prompt": "Show me the most recent Skyelight comment in full.",
+              "tools_triggered": "list_items, get_item",
+              "expected_behavior": "Opens the newest thread and shows its comment, any replies, the page and the element it points at."
+            },
+            {
+              "description": "Catch up since the last look",
+              "prompt": "What's new in Skyelight since I last checked?",
+              "tools_triggered": "whats_new",
+              "expected_behavior": "After the user confirms (it moves their last-looked bookmark), summarizes new threads, replies and status changes since the last check."
+            },
+            {
+              "description": "Summarize a project",
+              "prompt": "Give me a review of my Skyelight project: what is open and what was decided.",
+              "tools_triggered": "list_projects, project_review",
+              "expected_behavior": "Summarizes the project's open threads and anything resolved or decided."
+            },
+            {
+              "description": "Report back and resolve",
+              "prompt": "Reply on the most recent Skyelight thread that it has been fixed, and mark it resolved.",
+              "tools_triggered": "list_items, post_update, set_status",
+              "expected_behavior": "After the user confirms, posts a reply on that thread and marks it resolved."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Unrelated request",
+              "prompt": "Book me a flight to Denver next Friday."
+            },
+            {
+              "description": "Account deletion is not supported",
+              "prompt": "Delete my Skyelight account and all my data."
+            },
+            {
+              "description": "General writing with no Skyelight data",
+              "prompt": "Write a short poem about autumn."
+            }
+          ]
+        },
+        "demo_recording_url": "https://www.loom.com/share/c157a888d96146218d4e96504c468169",
+        "commerce": false,
+        "commerce_description": "Skyelight does not sell products or process payments in ChatGPT."
+      },
+      "publication": {
+        "release_notes": "First release: read the feedback pinned on your app, catch up on what changed, and reply on threads and resolve them."
+      }
+    }
+  }
+}

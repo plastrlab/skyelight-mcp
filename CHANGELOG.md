@@ -11,6 +11,29 @@ keeps working. A **patch** is a fix or a wording change. A **major** would be
 removing a tool or an argument, or changing what an existing field means, and
 there has not been one.
 
+## 1.0.0 — 2026-10-23
+
+1.0.0 says the tools are a stable interface. Nothing was removed or changed
+in meaning, so an agent written for 0.9 keeps working.
+
+### Added
+
+- **Listed in the official MCP Registry.** `server.json` names both ways to
+  connect: the hosted server at `https://app.skyelight.ai/mcp` and this
+  package over stdio. A workflow publishes it to the registry when a release
+  is tagged.
+- `SECURITY.md`: how to report a security problem.
+
+### Changed
+
+- `whats_new` is marked as a write, not read-only, since it moves your "last
+  looked" bookmark. Clients that ask before a write now ask before it.
+- The description, keywords and homepage
+  (`https://skyelight.ai/docs/mcp`) on npm.
+- The README says which tools read and which change things, and gives
+  Free's agent thread rule as it is now: each conversation counts once, and
+  each thread the agent works counts once a month.
+
 ## 0.9.3 — 2026-10-20
 
 ### Fixed
