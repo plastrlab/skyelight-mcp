@@ -1,0 +1,17 @@
+{
+  "name": "skyelight",
+  "version": "1.1.0",
+  "description": "Fix the feedback your team and clients pinned on your live site. Gemini gets each thread with its page, element and errors, then replies when it is done.",
+  "contextFileName": "GEMINI.md",
+  "mcpServers": {
+    "skyelight": {
+      "httpUrl": "https://app.skyelight.ai/mcp",
+      "oauth": {
+        "enabled": true,
+        "clientId": "RbF6Ga0l6S49Qsvu",
+        "redirectUri": "http://localhost:7777/oauth/callback",
+        "scopes": ["profile", "email", "offline_access"]
+      }
+    }
+  }
+}

@@ -179,8 +179,8 @@ async function register(client, config, { yes, quiet }) {
   const before = existsSync(file) ? readFileSync(file, "utf8") : "";
   const after =
     client.format === "json"
-      ? addToJson(before, client.entry(MCP_URL, CLIENT_ID))
-      : addToToml(before, client.entry(MCP_URL, CLIENT_ID));
+      ? addToJson(before, client.entry(MCP_URL, CLIENT_ID, callbackPort))
+      : addToToml(before, client.entry(MCP_URL, CLIENT_ID, callbackPort));
 
   if (after === null) {
     console.log(

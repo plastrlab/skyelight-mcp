@@ -1,8 +1,8 @@
 {
   "name": "@skyelight/mcp",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Give your AI assistant feedback pinned to the exact element, with its code, so it can fix and reply.",
-  "mcpName": "io.github.plastrlab/skyelight-mcp",
+  "mcpName": "ai.skyelight/mcp",
   "type": "module",
   "bin": {
     "skyelight-mcp": "./src/index.js"
@@ -36,7 +36,9 @@
     "claude-code",
     "cursor",
     "codex",
-    "chatgpt"
+    "chatgpt",
+    "gemini-cli",
+    "gemini-cli-extension"
   ],
   "license": "SEE LICENSE IN LICENSE",
   "homepage": "https://skyelight.ai/docs/mcp",

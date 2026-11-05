@@ -273,3 +273,43 @@ describe("taking it back out", () => {
     }
   });
 });
+
+/**
+ * Gemini CLI's callback server answers only `/oauth/callback`, and on a
+ * random port unless told one. The address it is told is the one Clerk has
+ * registered, so both halves are pinned here.
+ */
+describe("the Gemini CLI entry", () => {
+  const gemini = findClient("gemini");
+  const URL = "https://example.convex.site/mcp";
+
+  test("uses httpUrl, Gemini's key for streamable HTTP", () => {
+    const entry = gemini.entry(URL, "abc123");
+    assert.equal(entry.httpUrl, URL);
+    assert.ok(!("url" in entry), "url would mean SSE to Gemini");
+  });
+
+  test("names the client, and the callback Clerk has for Gemini", () => {
+    // The deployment's port is for /callback clients; Gemini keeps its own.
+    const { oauth } = gemini.entry(URL, "abc123", 54545);
+    assert.equal(oauth.enabled, true);
+    assert.equal(oauth.clientId, "abc123");
+    assert.equal(oauth.redirectUri, "http://localhost:7777/oauth/callback");
+    assert.ok(oauth.scopes.includes("offline_access"));
+  });
+
+  test("omits OAuth when no client was named", () => {
+    assert.deepEqual(gemini.entry(URL, ""), { httpUrl: URL });
+  });
+
+  test("its entry round-trips through the JSON writer", () => {
+    const entry = gemini.entry(URL, "abc123");
+    const before = JSON.stringify({ theme: "Default", mcpServers: { other: { command: "x" } } });
+    const written = addToJson(before, entry);
+    const parsed = JSON.parse(written);
+    assert.equal(parsed.theme, "Default");
+    assert.deepEqual(parsed.mcpServers.other, { command: "x" });
+    assert.deepEqual(parsed.mcpServers[SERVER_NAME], entry);
+    assert.equal(addToJson(written, entry), null);
+  });
+});

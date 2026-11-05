@@ -11,6 +11,31 @@ keeps working. A **patch** is a fix or a wording change. A **major** would be
 removing a tool or an argument, or changing what an existing field means, and
 there has not been one.
 
+## 1.1.0 — 2026-11-05
+
+### Added
+
+- **Gemini CLI.** The repository is now also a Gemini CLI extension:
+  `gemini extensions install https://github.com/plastrlab/skyelight-mcp`.
+  `gemini-extension.json` points Gemini at the hosted server and signs in as
+  Skyelight's pre-registered client; `GEMINI.md`, the `skyelight-feedback`
+  skill and the two commands (`/skyelight:whats-new`,
+  `/skyelight:fix-feedback`) come with it.
+- `init --client gemini` adds Skyelight to `~/.gemini/settings.json`.
+
+### Changed
+
+- **The MCP Registry name is `ai.skyelight/mcp`**, proved by the skyelight.ai
+  domain. It was `io.github.plastrlab/skyelight-mcp`, which is now marked
+  deprecated. The npm package is still `@skyelight/mcp`; nothing to change
+  for anyone who has it installed.
+- The `skyelight-feedback` skill lists open items with `list_items` and keeps
+  `whats_new` for when you ask what changed, since it moves your bookmark.
+  Plugin 1.0.6.
+- `whats_new` says when to use it (the user asks what changed since they last
+  checked) instead of telling the agent to call it at the start of a session.
+  Unasked calls moved the bookmark. From Anthropic's connector directory review.
+
 ## 1.0.0 — 2026-10-23
 
 1.0.0 says the tools are a stable interface. Nothing was removed or changed

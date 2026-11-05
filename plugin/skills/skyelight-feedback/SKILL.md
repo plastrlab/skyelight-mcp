@@ -10,7 +10,7 @@ Skyelight holds feedback people pinned directly on pages of a running app. Each 
 ## Find the work
 
 1. If you don't know the project, call `list_projects`. A `.skyelight.json` with `{"projectId": "..."}` in the repo names it.
-2. Call `whats_new` to catch up since you last looked, or `list_items` for everything open.
+2. Call `list_items` for everything open. When the user asks what changed since they last looked, call `whats_new` instead: it moves their "last looked" bookmark, so don't call it unasked.
 3. Call `get_item` for the full thread and the element before you change anything.
 
 ## Before you edit

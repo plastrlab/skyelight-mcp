@@ -52,9 +52,10 @@ export function insightToolDefinitions() {
       description:
         "What changed on a project since you last looked: new threads, new replies " +
         "grouped by thread, what was resolved or deferred, and what was assigned to " +
-        "you or mentioned you. Call it at the start of a session. Without `since` it " +
-        "reads from your bookmark and moves it forward; with `since` it reads that " +
-        "window and leaves the bookmark alone.",
+        "you or mentioned you. Use when the user asks what has changed on a project " +
+        "since they last checked. Without `since` it reads from their bookmark and " +
+        "moves it forward; with `since` it reads that window and leaves the " +
+        "bookmark alone.",
       inputSchema: {
         type: "object",
         properties: {

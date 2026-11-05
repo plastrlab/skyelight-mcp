@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Skyelight for Cursor: the feedback people pinned on your running app, for your coding agent.",
-    "version": "1.0.3"
+    "version": "1.0.6"
   },
   "plugins": [
     {

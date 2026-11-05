@@ -23,6 +23,14 @@ export const SERVER_NAME = "skyelight";
  */
 export const CALLBACK_PORT = 54545;
 
+/**
+ * Gemini CLI's own port. Its callback server answers only `/oauth/callback`
+ * (not our `/callback`), so it needs its own redirect URI in Clerk either
+ * way, and `http://localhost:7777/oauth/callback` is the one the Clerk
+ * setup has listed for Gemini since launch.
+ */
+export const GEMINI_CALLBACK_PORT = 7777;
+
 const home = () => homedir();
 
 /**
@@ -143,6 +151,38 @@ export const CLIENTS = [
           : []),
       ].join("\n"),
     detect: () => existsSync(join(home(), ".codex")),
+  },
+  {
+    /**
+     * Gemini CLI, in its user settings file.
+     *
+     * `httpUrl` is its key for streamable HTTP (`url` would mean SSE). With a
+     * client id it signs in as our pre-registered client; without one it
+     * tries dynamic registration, which the Clerk instance keeps off.
+     *
+     * Its callback server only answers `/oauth/callback`, not our usual
+     * `/callback`, and picks a random port unless `redirectUri` names one. So
+     * the redirect is spelled out, on {@link GEMINI_CALLBACK_PORT}, and that
+     * exact address is registered with Clerk. `enabled` makes it start the sign-in itself on
+     * the first 401 instead of telling the user to run `/mcp auth`.
+     */
+    id: "gemini",
+    label: "Gemini CLI",
+    file: () => join(home(), ".gemini", "settings.json"),
+    format: "json",
+    entry: (url, clientId) =>
+      clientId
+        ? {
+            httpUrl: url,
+            oauth: {
+              enabled: true,
+              clientId,
+              redirectUri: `http://localhost:${GEMINI_CALLBACK_PORT}/oauth/callback`,
+              scopes: ["profile", "email", "offline_access"],
+            },
+          }
+        : { httpUrl: url },
+    detect: () => existsSync(join(home(), ".gemini")),
   },
   {
     id: "windsurf",

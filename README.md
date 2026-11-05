@@ -41,7 +41,7 @@ leaves the sign-in to OAuth — the first time the agent connects it opens a
 browser and you approve it there. It shows what it will change and waits;
 `--yes` skips that once you have read it.
 
-It knows Claude Code, Cursor, Grok, Codex and Windsurf. With several
+It knows Claude Code, Cursor, Grok, Codex, Gemini CLI and Windsurf. With several
 installed it asks which; `--client cursor` or `--client all` answers in
 advance. `npx @skyelight/mcp remove` takes the entry out again. Point at
 another deployment with `SKYELIGHT_URL=https://…`; the deployment tells the
@@ -62,6 +62,19 @@ The plugin connects Claude Code to Skyelight's remote server (sign-in is
 OAuth, as above) and adds a skill for working through feedback and two
 commands: `/skyelight:whats-new` and `/skyelight:fix-feedback`. Its files are
 `.claude-plugin/marketplace.json` and `plugin/` in this repository.
+
+## As a Gemini CLI extension
+
+```bash
+gemini extensions install https://github.com/plastrlab/skyelight-mcp
+```
+
+The extension connects Gemini CLI to Skyelight's remote server and signs in
+through the browser on the first tool call (`/mcp auth skyelight` if it does
+not open). It adds the same skill and the same two commands as the Claude Code
+plugin: `/skyelight:whats-new` and `/skyelight:fix-feedback`. Its files are
+`gemini-extension.json`, `GEMINI.md`, `commands/` and `skills/` at the root of
+this repository. Antigravity can import it too.
 
 ## With a token
 
