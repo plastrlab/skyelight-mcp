@@ -69,12 +69,18 @@ commands: `/skyelight:whats-new` and `/skyelight:fix-feedback`. Its files are
 gemini extensions install https://github.com/plastrlab/skyelight-mcp
 ```
 
-The extension connects Gemini CLI to Skyelight's remote server and signs in
-through the browser on the first tool call (`/mcp auth skyelight` if it does
-not open). It adds the same skill and the same two commands as the Claude Code
-plugin: `/skyelight:whats-new` and `/skyelight:fix-feedback`. Its files are
-`gemini-extension.json`, `GEMINI.md`, `commands/` and `skills/` at the root of
-this repository. Antigravity can import it too.
+Then, in Gemini CLI, sign in once:
+
+```
+/mcp auth skyelight
+```
+
+A browser opens on Skyelight; sign in and allow the connection. Gemini CLI
+lists the tools before you sign in, so it won't ask by itself. The extension
+connects Gemini CLI to Skyelight's remote server and adds the same skill and
+the same two commands as the Claude Code plugin: `/skyelight:whats-new` and
+`/skyelight:fix-feedback`. Its files are `gemini-extension.json`,
+`GEMINI.md`, `commands/` and `skills/` at the root of this repository.
 
 ## With a token
 

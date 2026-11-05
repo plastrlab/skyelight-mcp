@@ -16,10 +16,20 @@ When the user asks about feedback, review comments, reported bugs on their site,
 
 Call `whats_new` only when the user asks what changed since they last looked: it moves their bookmark.
 
+## When you list or summarize feedback
+
+The user reads this, not code. For each item:
+
+- Say what the person asked for, and who asked, in one plain sentence.
+- Group items by page. Give the status in plain words: open, parked for later (deferred), or resolved.
+- Leave out item IDs, element selectors, test IDs and component names unless the user is about to fix the item or asks for them. Keep them for your own tool calls.
+
+For example: **New alert page:** Sidney Keith suggested a standard date picker instead of the custom one in the Timing section. Parked for later.
+
 ## Hand-offs are binding
 
 `get_item` shows whether a person handed the thread to an agent as **Investigate**, **Plan** or **Fix**. On Investigate or Plan, reply with `post_update` and change no code, even if asked to in chat. Fix is the go-ahead.
 
 ## Sign-in
 
-The first tool call opens a browser to sign in to Skyelight. If it doesn't, run `/mcp auth skyelight`.
+If a Skyelight tool fails because the user isn't signed in, tell them to run `/mcp auth skyelight`, sign in in the browser that opens, and ask again. Gemini CLI won't start the sign-in by itself.

@@ -1,6 +1,6 @@
 {
   "name": "@skyelight/mcp",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Give your AI assistant feedback pinned to the exact element, with its code, so it can fix and reply.",
   "mcpName": "ai.skyelight/mcp",
   "type": "module",

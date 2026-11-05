@@ -9,7 +9,8 @@
 # own skyelight.ai: a TXT record on the apex, "v=MCPv1; k=ed25519; p=...",
 # and the matching private key as the MCP_PRIVATE_KEY secret (hex). Until
 # 1.0.0 the name was io.github.plastrlab/skyelight-mcp, proved by GitHub
-# OIDC; the last step marks that old entry deprecated, once.
+# OIDC; a step before publishing deletes that old entry, once, because it
+# holds the same remote URL.
 name: Publish to MCP Registry
 
 on:
@@ -43,6 +44,23 @@ jobs:
         run: |
           curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
 
+      # The pre-1.1.0 name, io.github.plastrlab/skyelight-mcp, held the same
+      # remote URL, and the registry refuses a URL another name holds unless
+      # that name is deleted (deprecated is not enough). So it is deleted
+      # first. Its namespace is proved by GitHub OIDC, not the domain, so it
+      # needs its own login. Skipped once it is gone.
+      - name: Retire io.github.plastrlab/skyelight-mcp
+        run: |
+          old="io.github.plastrlab/skyelight-mcp"
+          status="$(curl -s "https://registry.modelcontextprotocol.io/v0/servers?search=$old" \
+            | jq -r --arg n "$old" '[.servers[] | select(.server.name == $n) | ._meta["io.modelcontextprotocol.registry/official"].status] | first // "missing"')"
+          echo "$old is $status"
+          if [ "$status" != missing ] && [ "$status" != deleted ]; then
+            ./mcp-publisher login github-oidc
+            ./mcp-publisher status --status deleted --all-versions \
+              --message "Renamed to ai.skyelight/mcp. Same server, same npm package." "$old"
+          fi
+
       - name: Authenticate to the MCP Registry (skyelight.ai DNS)
         env:
           MCP_PRIVATE_KEY: ${{ secrets.MCP_PRIVATE_KEY }}
@@ -54,17 +72,3 @@ jobs:
 
       - name: Publish
         run: ./mcp-publisher publish
-
-      # The pre-1.1.0 name. Its namespace is proved by GitHub OIDC, not the
-      # domain, so it needs its own login. Skipped once it is deprecated.
-      - name: Deprecate io.github.plastrlab/skyelight-mcp
-        run: |
-          old="io.github.plastrlab/skyelight-mcp"
-          status="$(curl -s "https://registry.modelcontextprotocol.io/v0/servers?search=$old" \
-            | jq -r --arg n "$old" '[.servers[] | select(.server.name == $n) | ._meta["io.modelcontextprotocol.registry/official"].status] | first // "missing"')"
-          echo "$old is $status"
-          if [ "$status" = active ]; then
-            ./mcp-publisher login github-oidc
-            ./mcp-publisher status --status deprecated --all-versions \
-              --message "Renamed to ai.skyelight/mcp. Same server, same npm package." "$old"
-          fi

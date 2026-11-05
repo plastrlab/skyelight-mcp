@@ -11,6 +11,19 @@ keeps working. A **patch** is a fix or a wording change. A **major** would be
 removing a tool or an argument, or changing what an existing field means, and
 there has not been one.
 
+## 1.1.1 — 2026-11-05
+
+### Changed
+
+- **Gemini reports feedback in plain words.** `GEMINI.md` tells Gemini to
+  say what each person asked for and who asked, grouped by page, and to keep
+  item IDs, selectors and component names for its own tool calls unless you
+  are about to fix the item or ask for them.
+- **Gemini CLI sign-in is a step you take.** Gemini CLI lists Skyelight's
+  tools before anyone signs in, so it never starts the sign-in itself; the
+  first tool call just fails. `GEMINI.md` and the README now say to run
+  `/mcp auth skyelight` once after installing.
+
 ## 1.1.0 — 2026-11-05
 
 ### Added
@@ -26,9 +39,10 @@ there has not been one.
 ### Changed
 
 - **The MCP Registry name is `ai.skyelight/mcp`**, proved by the skyelight.ai
-  domain. It was `io.github.plastrlab/skyelight-mcp`, which is now marked
-  deprecated. The npm package is still `@skyelight/mcp`; nothing to change
-  for anyone who has it installed.
+  domain. It was `io.github.plastrlab/skyelight-mcp`, which is removed: the
+  registry lets only one name hold the hosted server's URL. The npm package
+  is still `@skyelight/mcp`; nothing to change for anyone who has it
+  installed.
 - The `skyelight-feedback` skill lists open items with `list_items` and keeps
   `whats_new` for when you ask what changed, since it moves your bookmark.
   Plugin 1.0.6.
