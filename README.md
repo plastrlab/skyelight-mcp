@@ -289,3 +289,10 @@ can do in that workspace, and nothing more:
 - Owners, admins and collaborators read, reply, raise items and change any
   thread's status.
 - A token only reaches workspaces in the organization it was created in.
+
+## License
+
+MIT, from 1.1.2. See [LICENSE](LICENSE). The license covers this package and
+the plugins in this repository; using them needs a Skyelight account, under the
+[Skyelight terms of service](https://www.skyelight.ai/terms-of-service). The
+Skyelight name and logo are not covered by the license.

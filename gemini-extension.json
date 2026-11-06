@@ -1,6 +1,6 @@
 {
   "name": "skyelight",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Fix the feedback your team and clients pinned on your live site. Gemini gets each thread with its page, element and errors, then replies when it is done.",
   "contextFileName": "GEMINI.md",
   "mcpServers": {

@@ -1,6 +1,6 @@
 {
   "name": "@skyelight/mcp",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Give your AI assistant feedback pinned to the exact element, with its code, so it can fix and reply.",
   "mcpName": "ai.skyelight/mcp",
   "type": "module",
@@ -40,7 +40,7 @@
     "gemini-cli",
     "gemini-cli-extension"
   ],
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "homepage": "https://skyelight.ai/docs/mcp",
   "publishConfig": {
     "access": "public"

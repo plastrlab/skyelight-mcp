@@ -11,6 +11,16 @@ keeps working. A **patch** is a fix or a wording change. A **major** would be
 removing a tool or an argument, or changing what an existing field means, and
 there has not been one.
 
+## 1.1.2 — 2026-11-06
+
+### Changed
+
+- **MIT licensed.** This package and the plugins in this repository (Claude
+  Code, Cursor, Codex, Gemini CLI) are now under the MIT License. Versions
+  0.5.3 to 1.1.1 stay under the license they shipped with. The Skyelight
+  service, and the hosted server at `https://app.skyelight.ai/mcp`, are
+  unchanged and still need a Skyelight account.
+
 ## 1.1.1 — 2026-11-05
 
 ### Changed
