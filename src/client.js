@@ -96,6 +96,7 @@ export function createClient({ apiUrl, token, fetchImpl = fetch }) {
     fetchImpl,
     listWorkspaces: () => request("/api/v1/workspaces"),
     listProjects: (params) => request("/api/v1/projects", params),
+    createProject: (body) => post("/api/v1/projects", body),
     listItems: (params) => request("/api/v1/items", params),
     getItem: (id) => request(`/api/v1/items/${encodeURIComponent(id)}`),
     postUpdate: (body) => post("/api/v1/items/update", body),

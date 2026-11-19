@@ -11,6 +11,23 @@ keeps working. A **patch** is a fix or a wording change. A **major** would be
 removing a tool or an argument, or changing what an existing field means, and
 there has not been one.
 
+## 1.2.0 — 2026-11-18
+
+### Added
+
+- **`create_project`.** Makes a project from a name, so somebody who signed
+  up from their agent can finish setting up in the chat. Its answer says how
+  the first feedback gets in: a sample page to pin on now, the Chrome
+  extension, or `publish_review_link` for their own app. The same name twice
+  returns the same project.
+
+### Changed
+
+- **Empty accounts say what to do next.** `list_workspaces`, `list_projects`
+  and `list_items` point to `create_project` when there is no project, and
+  `list_items` on a project with no feedback lists the ways to leave the
+  first. The server instructions mention it too.
+
 ## 1.1.2 — 2026-11-06
 
 ### Changed

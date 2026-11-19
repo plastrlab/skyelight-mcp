@@ -7,7 +7,7 @@
     "email": "support@skyelight.ai",
     "url": "https://www.skyelight.ai"
   },
-  "homepage": "https://www.skyelight.ai/docs/mcp",
+  "homepage": "https://www.skyelight.ai/docs/mcp?utm_source=codex-plugin",
   "repository": "https://github.com/plastrlab/skyelight-mcp",
   "license": "MIT",
   "keywords": [
@@ -32,7 +32,7 @@
       "Summarize what a project has decided",
       "Reply on a thread and mark it resolved"
     ],
-    "websiteURL": "https://www.skyelight.ai",
+    "websiteURL": "https://www.skyelight.ai/?utm_source=codex-plugin",
     "supportURL": "https://www.skyelight.ai/docs/mcp",
     "privacyPolicyURL": "https://www.skyelight.ai/privacy-policy",
     "termsOfServiceURL": "https://www.skyelight.ai/terms-of-service",

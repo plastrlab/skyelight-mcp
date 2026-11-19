@@ -8,7 +8,7 @@
     "email": "support@skyelight.ai",
     "url": "https://skyelight.ai"
   },
-  "homepage": "https://skyelight.ai/docs/mcp",
+  "homepage": "https://skyelight.ai/docs/mcp?utm_source=claude-code-plugin",
   "repository": "https://github.com/plastrlab/skyelight-mcp",
   "license": "MIT",
   "keywords": [

@@ -17,6 +17,26 @@ import {
   renderInsight,
 } from "./insights.js";
 
+/**
+ * What a client is told about the server on connecting, by the npm package
+ * and the hosted server alike (`convex/mcp/protocol.ts`).
+ */
+export const INSTRUCTIONS =
+  "Skyelight holds feedback people left directly on pages of a running app. " +
+  "list_items to see what is outstanding, get_item for the full thread and the " +
+  "element it points at. whats_new catches you up since you last looked; " +
+  "find_by_source shows feedback on a file before you edit it; find_similar " +
+  "checks for an existing report before create_item; project_review and " +
+  "decision_log hold what a project settled, for reviews and summaries. " +
+  "An item can carry a hand-off the team set: investigate, plan or fix. It is " +
+  "binding. On investigate or plan, reply on the thread with post_update and " +
+  "change no code, even if asked to in chat; the go-ahead is the hand-off being " +
+  "switched to fix in Skyelight. On fix, make the change, following any plan " +
+  "or findings already on the thread. " +
+  "A new account can be empty. With no project, ask what site or app the " +
+  "feedback is for and call create_project; with no feedback yet, its " +
+  "answer says how to leave the first.";
+
 const PROJECT_HINT =
   'No project. Pass projectId, or add .skyelight.json with {"projectId": "..."}.';
 
@@ -64,6 +84,30 @@ export function toolDefinitions(opts = {}) {
             description: "Narrow to one workspace. Optional.",
           },
         },
+      },
+    },
+    {
+      name: "create_project",
+      description:
+        "Create a project: where one site or app's feedback lives. Use when " +
+        "the person has none yet (list_workspaces shows 0 projects) or asks " +
+        "for another. Ask what the site or app is called if you do not know. " +
+        "The answer says how they leave their first feedback. The same name " +
+        "again returns the project already made.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          name: {
+            type: "string",
+            description: 'What the site or app is called, e.g. "Acme website".',
+          },
+          workspaceId: {
+            type: "string",
+            description:
+              "Only needed when you can reach more than one workspace (list_workspaces).",
+          },
+        },
+        required: ["name"],
       },
     },
     {
@@ -404,6 +448,8 @@ const WRITE = {
 const TOOL_ANNOTATIONS = {
   list_workspaces: READ,
   list_projects: READ,
+  // The same name twice is the same project.
+  create_project: { ...WRITE, idempotentHint: true },
   list_items: READ,
   search_items: READ,
   get_item: READ,
@@ -459,7 +505,9 @@ export function renderWorkspaces(result) {
   }
 
   if (total === 0) {
-    lines.push("You are not a member of any workspace yet.");
+    lines.push(
+      "You are not a member of any workspace yet. Set one up in the Skyelight web app, then ask again.",
+    );
     return lines.join("\n");
   }
 
@@ -473,6 +521,12 @@ export function renderWorkspaces(result) {
     if (w.unavailableReason) lines.push(`    ${w.unavailableReason}`);
     // Free's monthly agent threads, and how many are left (SKY-442).
     if (w.allowance) lines.push(`    ${w.allowance}`);
+    // A new account: the next step, so the agent can take it here.
+    if (w.projectCount === 0 && w.role !== "reviewer" && !w.unavailableReason) {
+      lines.push(
+        "    No projects yet: ask what site or app the feedback is for, then call create_project.",
+      );
+    }
   }
   return lines.join("\n");
 }
@@ -496,10 +550,50 @@ function ago(ts) {
   return months < 12 ? `${months}mo ago` : `${Math.round(months / 12)}y ago`;
 }
 
+/**
+ * How a project's first feedback gets in, for an empty project. The sample
+ * page first, because it needs nothing installed.
+ */
+export function firstFeedbackLines(ff) {
+  const lines = [
+    "Offer the person a way to leave their first feedback:",
+    `- Try it now on a sample page, nothing to install: ${ff.sampleUrl}`,
+    `- On any site, with the Chrome extension: ${ff.extensionUrl}`,
+  ];
+  if (ff.canAddBadge) {
+    lines.push(
+      "- On their own app, so reviewers need no extension: call " +
+        "publish_review_link with the app's URL. It returns a script tag " +
+        "to add; if you can edit the app's code, offer to add it.",
+    );
+  }
+  lines.push(
+    `New feedback shows up in list_items. Project page: ${ff.projectUrl}`,
+  );
+  return lines;
+}
+
+export function renderProjectCreated(result) {
+  const { created, project, workspace } = result;
+  const lines = [
+    created
+      ? `Created ${project.name} in ${workspace.name}.`
+      : `${project.name} already exists in ${workspace.name}, so this is that project.`,
+    `Project id: ${project.id}`,
+  ];
+  if (result.firstFeedback) {
+    lines.push("", ...firstFeedbackLines(result.firstFeedback));
+  }
+  return lines.join("\n");
+}
+
 export function renderProjects(result) {
   const { projects, total } = result;
   if (total === 0) {
-    return "No projects you can reach. Create one in the Skyelight web app.";
+    return (
+      "No projects yet. Ask what site or app the feedback is for, then " +
+      "call create_project with its name."
+    );
   }
 
   const spans = new Set(projects.map((p) => p.workspace.id)).size > 1;
@@ -539,6 +633,15 @@ export function renderList(result, { searched } = {}) {
   const { project, summary, items, matched, truncated, capped, scanLimit } =
     result;
   const lines = [];
+
+  // Nothing in the project at all: what to do about that, not a row of zeros.
+  if (summary.total === 0 && !capped) {
+    lines.push(`${project.name} has no feedback yet.`);
+    if (result.firstFeedback) {
+      lines.push("", ...firstFeedbackLines(result.firstFeedback));
+    }
+    return lines.join("\n");
+  }
 
   lines.push(
     `${project.name}: ${plural(summary.total, "item", "items")} total — ` +
@@ -933,6 +1036,19 @@ export async function callTool(name, args, { client, config }) {
       workspaceId: args.workspaceId,
     });
     return { text: renderProjects(result), data: result };
+  }
+
+  if (name === "create_project") {
+    if (!args.name?.trim()) {
+      throw new Error(
+        "create_project needs a name: what the site or app is called.",
+      );
+    }
+    const result = await client.createProject({
+      name: args.name,
+      ...(args.workspaceId ? { workspaceId: args.workspaceId } : {}),
+    });
+    return { text: renderProjectCreated(result), data: result };
   }
 
   if (name === "list_items") {

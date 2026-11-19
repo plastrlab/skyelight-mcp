@@ -9,7 +9,7 @@ people asked for and tell them when it's done.
 ## What it adds
 
 - **The Skyelight connection.** Skyelight's hosted MCP server at
-  `https://app.skyelight.ai/mcp`, with 18 tools to list, search and read
+  `https://app.skyelight.ai/mcp`, with 19 tools to list, search and read
   feedback, check feedback on a file before editing it, post updates, set
   status, and publish a review link.
 - **A skill, `skyelight-feedback`.** How to work through feedback: catch up,

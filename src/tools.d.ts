@@ -39,7 +39,11 @@ export declare function renderList(
 
 export declare function renderItem(item: unknown): string;
 export declare function renderWorkspaces(result: unknown): string;
+/** What a client is told about the server on connecting. */
+export declare const INSTRUCTIONS: string;
 export declare function renderProjects(result: unknown): string;
+export declare function renderProjectCreated(result: unknown): string;
+export declare function firstFeedbackLines(ff: unknown): string[];
 export declare function renderMembers(result: unknown): string;
 export declare function renderAssigned(result: unknown): string;
 

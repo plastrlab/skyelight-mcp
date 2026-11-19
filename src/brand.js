@@ -43,6 +43,7 @@ export const STATUS = {
     "Found your workspaces",
   ],
   list_projects: ["Looking up Skyelight projects", "Found your projects"],
+  create_project: ["Creating the project", "Created the project"],
   list_items: ["Reading Skyelight feedback", "Read the feedback"],
   search_items: ["Searching Skyelight feedback", "Searched the feedback"],
   get_item: ["Opening the thread", "Opened the thread"],

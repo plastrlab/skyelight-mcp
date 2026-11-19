@@ -16,7 +16,7 @@ Full guide: [skyelight.ai/docs/mcp](https://skyelight.ai/docs/mcp). The REST
 API behind the local server is documented at
 [skyelight.ai/docs/api](https://skyelight.ai/docs/api).
 
-Two ways to connect, with the same eighteen tools either way:
+Two ways to connect, with the same nineteen tools either way:
 
 - **Remote, with OAuth** — the default. Your agent talks to Skyelight over
   HTTP and you sign in once in the browser. Nothing is pasted and no key is
@@ -145,6 +145,7 @@ agent calls `list_projects` first rather than guess.
 | --------------------- | ------------------------------------------------------------------------------------ |
 | `list_workspaces`     | Which workspaces this credential can reach, and who you are.                         |
 | `list_projects`       | The projects inside them, with the ids the other tools take.                         |
+| `create_project`      | Make a project, for a new account with none, and say how its first feedback gets in. |
 | `list_items`          | What is outstanding. Filter by page, type, status, assignee, hand-off.               |
 | `search_items`        | Find items whose thread mentions some text, replies included.                        |
 | `get_item`            | Everything needed to work one item: thread, page, anchor, code, images.              |
@@ -164,8 +165,8 @@ agent calls `list_projects` first rather than guess.
 
 **Which tools change things.** `list_workspaces`, `list_projects`,
 `list_items`, `search_items`, `get_item`, `list_members`, `project_review`,
-`find_by_source`, `find_similar` and `decision_log` only read. `post_update`,
-`create_item`, `set_status`, `assign`, `save_rule`, `merge_items`,
+`find_by_source`, `find_similar` and `decision_log` only read. `create_project`,
+`post_update`, `create_item`, `set_status`, `assign`, `save_rule`, `merge_items`,
 `publish_review_link` and `whats_new` (which moves your "last looked"
 bookmark) make changes. Every tool carries MCP annotations saying which it
 is, with `merge_items` marked destructive, so your client can ask before a

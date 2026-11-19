@@ -7,6 +7,7 @@
 export const TOOL_TITLES = {
   list_workspaces: "List workspaces",
   list_projects: "List projects",
+  create_project: "Create a project",
   list_items: "List feedback",
   search_items: "Search feedback",
   get_item: "Get feedback item",

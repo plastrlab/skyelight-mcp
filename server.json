@@ -2,8 +2,8 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "ai.skyelight/mcp",
   "title": "Skyelight",
-  "description": "Give your AI assistant feedback pinned to the exact element, with its code, so it can fix and reply.",
-  "version": "1.1.2",
+  "description": "Website feedback for your coding agent: comments pinned to the exact element, with its code.",
+  "version": "1.2.0",
   "websiteUrl": "https://skyelight.ai/docs/mcp?ref=mcp-registry",
   "repository": {
     "url": "https://github.com/plastrlab/skyelight-mcp",
@@ -28,7 +28,7 @@
     {
       "registryType": "npm",
       "identifier": "@skyelight/mcp",
-      "version": "1.1.2",
+      "version": "1.2.0",
       "transport": {
         "type": "stdio"
       },

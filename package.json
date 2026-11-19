@@ -1,7 +1,7 @@
 {
   "name": "@skyelight/mcp",
-  "version": "1.1.2",
-  "description": "Give your AI assistant feedback pinned to the exact element, with its code, so it can fix and reply.",
+  "version": "1.2.0",
+  "description": "Website feedback for your coding agent: comments pinned to the exact element, with its code.",
   "mcpName": "ai.skyelight/mcp",
   "type": "module",
   "bin": {
@@ -41,7 +41,7 @@
     "gemini-cli-extension"
   ],
   "license": "MIT",
-  "homepage": "https://skyelight.ai/docs/mcp",
+  "homepage": "https://skyelight.ai/docs/mcp?utm_source=npm",
   "publishConfig": {
     "access": "public"
   },

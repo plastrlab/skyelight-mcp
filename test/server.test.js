@@ -8,7 +8,13 @@ import {
 } from "../src/server.js";
 import { createClient, ApiError } from "../src/client.js";
 import { readFileSync } from "node:fs";
-import { renderList, renderItem, renderWorkspaces } from "../src/tools.js";
+import {
+  renderList,
+  renderItem,
+  renderWorkspaces,
+  renderProjects,
+  INSTRUCTIONS,
+} from "../src/tools.js";
 import { imageBlocksFor } from "../src/images.js";
 import { VERSION } from "../src/version.js";
 import { parseDotenv, resolveConfig, ConfigError } from "../src/config.js";
@@ -111,6 +117,22 @@ function fakeClient(responses = {}) {
       calls.push(["postUpdate", body]);
       if (responses.postUpdate instanceof Error) throw responses.postUpdate;
       return responses.postUpdate ?? { pinId: "p1", postedAs: "agent:cursor" };
+    },
+    createProject: async (body) => {
+      calls.push(["createProject", body]);
+      return (
+        responses.createProject ?? {
+          created: true,
+          project: { id: "p9", name: body.name, slug: "acme" },
+          workspace: { id: "w1", name: "Acme Space", slug: "acme-space" },
+          firstFeedback: {
+            sampleUrl: "https://app.skyelight.ai/welcome?ws=acme-space&step=pin&p=acme",
+            extensionUrl: "https://chromewebstore.google.com/detail/x",
+            projectUrl: "https://app.skyelight.ai/w/acme-space/p/acme",
+            canAddBadge: true,
+          },
+        }
+      );
     },
     createItem: async (body) => {
       calls.push(["createItem", body]);
@@ -216,6 +238,7 @@ describe("protocol", () => {
     assert.deepEqual(res.result.tools.map((t) => t.name).sort(), [
       "assign",
       "create_item",
+      "create_project",
       "decision_log",
       "find_by_source",
       "find_similar",
@@ -1317,4 +1340,80 @@ test("the server names itself with the Skyelight mark, and ChatGPT gets a status
     assert.ok(invoking && invoked, `${t.name} has status text`);
     assert.ok(invoking.length <= 64 && invoked.length <= 64, `${t.name} fits`);
   }
+});
+
+describe("a new, empty account (SKY-504)", () => {
+  test("create_project posts the name and narrates the first-feedback steps", async () => {
+    const client = fakeClient();
+    const server = createServer({ client, config: {} });
+    const res = await rpc(server, "tools/call", {
+      name: "create_project",
+      arguments: { name: "Acme", workspaceId: "w1" },
+    });
+    assert.deepEqual(client.calls.at(-1), [
+      "createProject",
+      { name: "Acme", workspaceId: "w1" },
+    ]);
+    const text = res.result.content[0].text;
+    assert.match(text, /Created Acme in Acme Space\./);
+    assert.match(text, /step=pin&p=acme/);
+    assert.match(text, /Chrome extension/);
+    assert.match(text, /publish_review_link/);
+  });
+
+  test("create_project without a name is refused before any request", async () => {
+    const client = fakeClient();
+    const server = createServer({ client, config: {} });
+    const res = await rpc(server, "tools/call", {
+      name: "create_project",
+      arguments: { name: " " },
+    });
+    assert.equal(res.result.isError, true);
+    assert.equal(client.calls.length, 0);
+  });
+
+  test("a space with no projects says to call create_project", () => {
+    const text = renderWorkspaces({
+      total: 1,
+      you: null,
+      workspaces: [{ id: "w1", name: "Acme", role: "owner", projectCount: 0 }],
+    });
+    assert.match(text, /No projects yet: .*create_project/);
+    assert.match(renderProjects({ projects: [], total: 0 }), /create_project/);
+  });
+
+  test("a reviewer is not told to create one", () => {
+    const text = renderWorkspaces({
+      total: 1,
+      you: null,
+      workspaces: [{ id: "w1", name: "Acme", role: "reviewer", projectCount: 0 }],
+    });
+    assert.doesNotMatch(text, /create_project/);
+  });
+
+  test("an empty project lists the ways in, not a row of zeros", () => {
+    const text = renderList({
+      project: { id: "p1", name: "Acme" },
+      summary: { total: 0, open: 0, deferred: 0, resolved: 0, unassigned: 0 },
+      items: [],
+      matched: 0,
+      firstFeedback: {
+        sampleUrl: "https://app.skyelight.ai/welcome?ws=s&step=pin&p=acme",
+        extensionUrl: "https://chromewebstore.google.com/detail/x",
+        projectUrl: "https://app.skyelight.ai/w/s/p/acme",
+        canAddBadge: false,
+      },
+    });
+    assert.match(text, /Acme has no feedback yet\./);
+    assert.match(text, /sample page/);
+    assert.doesNotMatch(text, /0 open/);
+    assert.doesNotMatch(text, /publish_review_link/);
+  });
+
+  test("the instructions the package sends cover an empty account", async () => {
+    const server = createServer({ client: fakeClient(), config: {} });
+    const res = await rpc(server, "initialize", {});
+    assert.equal(res.result.instructions, INSTRUCTIONS);
+    assert.match(INSTRUCTIONS, /new account can be empty.*create_project/);
+  });
 });
